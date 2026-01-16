@@ -3,6 +3,8 @@
 import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ShieldCheck } from "lucide-react";
+import Image from "next/image";
+import logo from "../../../Madmoun_Logo_By_Kenz.jpeg";
 import Link from "next/link";
 import { MoneyAmount } from "@/components/money-amount";
 import { VaultWallet } from "@/components/vault-wallet";
@@ -119,6 +121,19 @@ export default function DashboardPage() {
 
   return (
     <main className="space-y-12 pt-10">
+      <header className="flex items-center gap-4">
+        <div className="logo-shimmer logo-glow">
+          <Image src={logo} alt="Madmoun logo" className="h-10 w-auto" />
+        </div>
+        <div>
+          <p className="text-xs uppercase tracking-[0.3em] text-emerald-200/70">
+            Buyer Dashboard
+          </p>
+          <p className="text-sm text-slate-300">
+            Live escrow operations console
+          </p>
+        </div>
+      </header>
       <VaultWallet />
 
       <motion.section

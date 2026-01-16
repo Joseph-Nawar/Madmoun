@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { TrustVisualizer } from "@/components/trust-visualizer";
 import { BackgroundBeams } from "@/components/background-beams";
 import { MoneyAmount } from "@/components/money-amount";
+import { BlurIn } from "@/components/blur-in";
 
 export function SpotlightHero() {
   return (
@@ -25,7 +26,7 @@ export function SpotlightHero() {
       />
 
       <div className="relative z-10 grid gap-10 md:grid-cols-[1.2fr_0.8fr] md:items-center">
-        <div className="space-y-6">
+        <BlurIn className="space-y-6">
           <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/40 bg-emerald-500/10 px-4 py-1 text-xs uppercase tracking-[0.3em] text-emerald-200">
             <ShieldCheck className="h-4 w-4" />
             Fintech Trust Layer
@@ -51,8 +52,8 @@ export function SpotlightHero() {
               <Link href="/dashboard">Explore the buyer portal</Link>
             </Button>
           </div>
-        </div>
-        <div className="flex flex-col gap-4">
+        </BlurIn>
+        <BlurIn className="flex flex-col gap-4" delay={0.15}>
           <TrustVisualizer />
           <div className="glass-container gradient-border rounded-3xl p-6 text-sm text-slate-200">
             <p className="text-xs uppercase tracking-[0.25em] text-amber-200/70">
@@ -60,13 +61,13 @@ export function SpotlightHero() {
             </p>
             <MoneyAmount
               value={4600000}
-              className="mt-3 text-2xl font-semibold text-white font-display"
+              className="mt-3 text-2xl font-semibold text-emerald-200 font-display"
             />
             <p className="mt-2 text-sm text-slate-300">
               secured in escrow across Cairo, Giza, and Alexandria.
             </p>
           </div>
-        </div>
+        </BlurIn>
       </div>
     </section>
   );

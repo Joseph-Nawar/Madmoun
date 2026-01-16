@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { motion, useAnimation } from "framer-motion";
 import { Code2, KeyRound, ShieldCheck, Tv, Footprints } from "lucide-react";
+import { BlurIn } from "@/components/blur-in";
 
 const cards = [
   {
@@ -44,23 +45,28 @@ export function InfiniteUseCases() {
   return (
     <section className="glass-container gradient-border rounded-3xl p-8">
       <header className="flex items-center justify-between">
-        <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-emerald-300/70">
-            Infinite Trust
-          </p>
-          <h2 className="mt-3 text-3xl font-semibold text-white font-display">
-            The escrow loop that never stops.
-          </h2>
-        </div>
-        <div className="hidden items-center gap-2 text-xs uppercase tracking-[0.3em] text-emerald-200 md:flex">
-          <ShieldCheck className="h-4 w-4" />
-          Protected at every mile
-        </div>
+        <BlurIn>
+          <div>
+            <p className="text-xs uppercase tracking-[0.3em] text-emerald-300/70">
+              Infinite Trust
+            </p>
+            <h2 className="mt-3 text-3xl font-semibold text-white font-display">
+              The escrow loop that never stops.
+            </h2>
+          </div>
+        </BlurIn>
+        <BlurIn delay={0.15}>
+          <div className="hidden items-center gap-2 text-xs uppercase tracking-[0.3em] text-emerald-200 md:flex">
+            <ShieldCheck className="h-4 w-4" />
+            Protected at every mile
+          </div>
+        </BlurIn>
       </header>
 
       <div className="mt-8 overflow-hidden">
         <motion.div
           className="flex gap-6"
+          style={{ willChange: "transform" }}
           animate={controls}
           onHoverStart={() => controls.stop()}
           onHoverEnd={() =>

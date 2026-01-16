@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { PageTransition } from "@/components/page-transition";
 import { BackgroundConstruction } from "@/components/background-construction";
+import logo from "../../Madmoun_Logo_By_Kenz.jpeg";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,6 +26,9 @@ export const metadata: Metadata = {
   title: "Madmoun | Trusted Escrow for Egypt",
   description:
     "Madmoun is a high-end escrow fintech securing every EGP transaction with trust and protection.",
+  icons: {
+    icon: logo.src,
+  },
 };
 
 export default function RootLayout({
@@ -44,15 +49,15 @@ export default function RootLayout({
               <div className="relative mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-4">
                 <div className="absolute inset-0 -z-10 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-[0_20px_60px_rgba(0,0,0,0.35)]" />
                 <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-2xl bg-emerald-600/20 ring-1 ring-emerald-400/40" />
-                  <div>
-                    <p className="text-sm uppercase tracking-[0.3em] text-emerald-300/80">
-                      Madmoun
-                    </p>
-                    <p className="text-xs text-slate-400">
-                      Escrow Infrastructure
-                    </p>
+                  <div className="logo-shimmer logo-glow">
+                    <Image
+                      src={logo}
+                      alt="Madmoun logo"
+                      className="h-10 w-auto"
+                      priority
+                    />
                   </div>
+                  <p className="text-xs text-slate-400">Escrow Infrastructure</p>
                 </div>
                 <nav className="hidden items-center gap-8 text-sm text-slate-300 md:flex">
                   <Link className="transition hover:text-emerald-300" href="/">
@@ -70,8 +75,13 @@ export default function RootLayout({
             <div className="mx-auto w-full max-w-6xl px-6 pb-16">
               <PageTransition>{children}</PageTransition>
               <footer className="mt-16 flex justify-center">
-                <div className="glass-container gradient-border rounded-full px-4 py-2 text-[10px] uppercase tracking-[0.3em] text-slate-300">
-                  Licensed by Nile FinTech Authority • Secured by Madmoun Protocol.
+                <div className="glass-container gradient-border flex items-center gap-3 rounded-full px-4 py-2 text-[10px] uppercase tracking-[0.3em] text-slate-300">
+                  <Image
+                    src={logo}
+                    alt="Madmoun logo"
+                    className="logo-mono h-6 w-auto"
+                  />
+                  <span>Licensed by Nile FinTech Authority • Secured by Madmoun Protocol.</span>
                 </div>
               </footer>
             </div>
