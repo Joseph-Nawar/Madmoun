@@ -10,7 +10,7 @@ const cards = [
     title: "Electronics",
     description: "4K TV",
     badge: "Verification Pending",
-    icon: Tv,
+    icon: Tv, 
   },
   {
     title: "Fashion",

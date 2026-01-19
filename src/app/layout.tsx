@@ -39,11 +39,11 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${playfairDisplay.variable} min-h-screen bg-slate-950 text-slate-100 antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${playfairDisplay.variable} min-h-screen bg-[#020617] text-slate-100 antialiased`}
       >
         <div className="relative min-h-screen overflow-x-hidden">
           <BackgroundConstruction />
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(5,150,105,0.15),transparent_55%)]" />
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(5,150,105,0.12),transparent_55%)]" />
           <div className="relative z-10">
             <div className="sticky top-0 z-50">
               <div className="relative mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-4">
