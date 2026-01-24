@@ -77,9 +77,13 @@ export function InfiniteUseCases() {
           }
         >
           {[...cards, ...cards].map((card, index) => (
-            <article
+            <motion.article
               key={`${card.title}-${index}`}
+              data-magnetic
               className="group glass-container gradient-border relative flex h-[240px] w-[360px] flex-col justify-between rounded-3xl p-6 transition duration-300 hover:shadow-[0_0_30px_rgba(16,185,129,0.4)]"
+              animate={{ y: [0, -6, 0] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: index * 0.1 }}
+              whileHover={{ y: -5, scale: 1.02 }}
             >
               <div className="flex items-start justify-between">
                 <div>
@@ -102,7 +106,7 @@ export function InfiniteUseCases() {
                   Live escrow
                 </div>
               </div>
-            </article>
+            </motion.article>
           ))}
         </motion.div>
       </div>

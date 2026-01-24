@@ -26,7 +26,7 @@ export function MoneyAmount({ value, className, type = "currency" }: MoneyAmount
         : currencyFormatter.format(value);
 
   return (
-    <span className={`inline-flex items-center gap-[1px] ${className ?? ""}`}>
+    <span className={`inline-flex items-center gap-[1px] font-mono ${className ?? ""}`}>
       <AnimatePresence mode="popLayout" initial={false}>
         {Array.from(formatted).map((char, index) => {
           const isDigit = /\d/.test(char);

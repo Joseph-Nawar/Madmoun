@@ -1,0 +1,628 @@
+.pipeline-container {
+  position: relative;
+  margin: 24px 0;
+  padding: 16px;
+  border-radius: 16px;
+  background: rgba(2, 6, 23, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.pipeline-track {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  position: relative;
+  z-index: 2;
+}
+
+.pipeline-segment {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(2, 6, 23, 0.8));
+  color: #ecfeff;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  box-shadow: 0 12px 24px rgba(2, 6, 23, 0.4);
+  will-change: transform;
+}
+
+.pipeline-icon {
+  font-size: 1rem;
+}
+
+.pipeline-arrow {
+  position: absolute;
+  right: -18px;
+  color: rgba(245, 158, 11, 0.8);
+  font-size: 1rem;
+}
+
+.money-flow {
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  transform: translateY(-50%);
+  font-size: 20px;
+  filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.6));
+  z-index: 1;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.counter-container {
+  display: inline-flex;
+  align-items: center;
+}
+
+.counter-value {
+  display: inline-flex;
+  align-items: baseline;
+}
+
+.scroll-reveal {
+  will-change: transform, opacity;
+}
+
+.status-timeline {
+  width: 100%;
+  margin-top: 1.5rem;
+}
+
+.timeline-track {
+  position: relative;
+  padding: 1.5rem 0 0.5rem;
+}
+
+.timeline-progress {
+  position: absolute;
+  top: 16px;
+  left: 0;
+  height: 3px;
+  width: 0;
+  background: linear-gradient(90deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.9));
+  border-radius: 999px;
+  box-shadow: 0 0 16px rgba(16, 185, 129, 0.4);
+}
+
+.timeline-steps {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.timeline-step {
+  display: grid;
+  gap: 6px;
+  text-align: center;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(148, 163, 184, 0.7);
+}
+
+.timeline-step .step-icon {
+  width: 36px;
+  height: 36px;
+  margin: 0 auto;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(2, 6, 23, 0.6);
+}
+
+.timeline-step.active {
+  color: rgba(236, 253, 245, 0.9);
+}
+
+.timeline-step.active .step-icon {
+  border-color: rgba(16, 185, 129, 0.5);
+  background: rgba(16, 185, 129, 0.15);
+  box-shadow: 0 0 18px rgba(16, 185, 129, 0.4);
+}
+
+.timeline-step.current .step-icon {
+  background: rgba(56, 189, 248, 0.2);
+  border-color: rgba(56, 189, 248, 0.6);
+}
+
+@media (max-width: 768px) {
+  .pipeline-track {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .pipeline-arrow {
+    display: none;
+  }
+
+  .timeline-steps {
+    grid-template-columns: 1fr 1fr;
+    row-gap: 16px;
+  }
+
+  .timeline-progress {
+    top: 10px;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 8px rgba(0, 102, 179, 0.25));
+  }
+  50% {
+    filter: drop-shadow(0 0 16px rgba(0, 102, 179, 0.4));
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.floating-element {
+  animation: float 3s ease-in-out infinite;
+}
+
+.glow-element {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.shimmer-text {
+  background: linear-gradient(90deg, #0066b3, #ff8c00, #0066b3);
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 3s linear infinite;
+}
+
+.vault-visual {
+  position: relative;
+  padding: 24px;
+  border-radius: 24px;
+  background: radial-gradient(circle at 20% 20%, rgba(16, 185, 129, 0.2), transparent 55%),
+    rgba(2, 6, 23, 0.85);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  box-shadow: 0 30px 80px rgba(2, 6, 23, 0.5);
+  overflow: hidden;
+}
+
+.enhanced-vault {
+  position: relative;
+  padding: 20px;
+  border-radius: 24px;
+  background: rgba(2, 6, 23, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  will-change: transform, opacity;
+  contain: layout paint;
+}
+
+.enhanced-vault-svg {
+  display: grid;
+  place-items: center;
+  height: 280px;
+}
+
+.enhanced-vault svg {
+  width: 100%;
+  height: 100%;
+}
+
+.enhanced-vault-ring {
+  fill: none;
+  stroke: rgba(16, 185, 129, 0.5);
+  stroke-width: 2;
+  stroke-dasharray: 6 6;
+  will-change: transform, opacity;
+}
+
+.enhanced-vault-shell {
+  fill: rgba(30, 41, 59, 0.9);
+  stroke: rgba(245, 158, 11, 0.7);
+  stroke-width: 2;
+}
+
+.enhanced-vault-door-left,
+.enhanced-vault-door-right {
+  fill: rgba(15, 23, 42, 0.95);
+  stroke: rgba(245, 158, 11, 0.6);
+  stroke-width: 2;
+  will-change: transform;
+}
+
+.enhanced-vault-lock {
+  fill: rgba(245, 158, 11, 0.9);
+  filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.5));
+}
+
+.enhanced-money-particle {
+  fill: rgba(255, 215, 0, 0.9);
+  filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.6));
+  will-change: transform, opacity;
+}
+
+.enhanced-money-trail {
+  fill: rgba(255, 215, 0, 0.5);
+  will-change: transform, opacity;
+}
+
+.enhanced-vault-status {
+  fill: rgba(226, 232, 240, 0.85);
+  font-size: 14px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.enhanced-vault-overlay {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.enhanced-vault-counter {
+  display: grid;
+  gap: 4px;
+  font-size: 0.85rem;
+  color: rgba(226, 232, 240, 0.8);
+}
+
+.enhanced-vault-counter span {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #ecfeff;
+}
+
+.enhanced-vault-indicators {
+  display: flex;
+  fill: rgba(255, 215, 0, 0.9);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  gap: 8px;
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+
+.enhanced-vault-indicators span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(148, 163, 184, 0.7);
+}
+
+.enhanced-vault-indicators span.active {
+  border-color: rgba(16, 185, 129, 0.5);
+  color: rgba(236, 253, 245, 0.95);
+  filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.35));
+}
+
+.enhanced-vault-legend {
+  display: grid;
+  gap: 8px;
+  font-size: 0.7rem;
+  color: rgba(148, 163, 184, 0.75);
+}
+
+.enhanced-vault-legend h4 {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(226, 232, 240, 0.8);
+  margin-bottom: 2px;
+}
+
+.enhanced-vault-cta {
+  justify-self: start;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #ecfeff;
+  background: rgba(16, 185, 129, 0.18);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.enhanced-vault-cta:hover {
+  transform: translateY(-2px);
+  filter: drop-shadow(0 10px 20px rgba(16, 185, 129, 0.3));
+}
+
+.enhanced-vault-skeleton {
+  height: 320px;
+}
+
+.vault-canvas {
+  position: relative;
+  height: 260px;
+  display: grid;
+  place-items: center;
+}
+
+.vault-shell {
+  position: relative;
+  width: 220px;
+  height: 180px;
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(145deg, rgba(15, 23, 42, 0.9), rgba(2, 6, 23, 0.9));
+  box-shadow: inset 0 0 20px rgba(16, 185, 129, 0.18);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  will-change: transform, opacity;
+}
+
+.vault-door {
+  position: absolute;
+  top: 12px;
+  width: 45%;
+  height: calc(100% - 24px);
+  background: linear-gradient(180deg, rgba(30, 41, 59, 0.9), rgba(2, 6, 23, 0.95));
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 0 16px rgba(16, 185, 129, 0.12);
+  will-change: transform;
+}
+
+.vault-door-left {
+  left: 8px;
+  border-radius: 20px 8px 8px 20px;
+}
+
+.vault-door-right {
+  right: 8px;
+  border-radius: 8px 20px 20px 8px;
+}
+
+.vault-core {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  gap: 8px;
+}
+
+.vault-lock {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+  font-size: 24px;
+}
+
+.vault-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(148, 163, 184, 0.7);
+}
+
+.vault-money {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  display: flex;
+  gap: 8px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.vault-money span {
+  display: inline-block;
+  color: rgba(245, 158, 11, 0.9);
+  text-shadow: 0 0 10px rgba(245, 158, 11, 0.6);
+  animation: money-flow 3s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.vault-money-out {
+  left: auto;
+  right: 12px;
+}
+
+.vault-money-out span {
+  color: rgba(56, 189, 248, 0.9);
+  text-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
+  will-change: transform, opacity;
+}
+
+.vault-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.vault-stat {
+  display: grid;
+  gap: 4px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(2, 6, 23, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.vault-stat-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(148, 163, 184, 0.7);
+}
+
+.vault-stat-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ecfeff;
+}
+
+.vault-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.vault-action {
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #ecfeff;
+  background: rgba(16, 185, 129, 0.2);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.vault-action:hover {
+  transform: translateY(-2px);
+  filter: drop-shadow(0 12px 24px rgba(16, 185, 129, 0.35)) brightness(1.1);
+}
+
+.vault-action.secondary {
+  background: rgba(56, 189, 248, 0.15);
+  border-color: rgba(56, 189, 248, 0.35);
+}
+
+.vault-breakdown {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: rgba(2, 6, 23, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.vault-breakdown.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.vault-breakdown-title {
+  font-size: 0.55rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(148, 163, 184, 0.8);
+}
+
+.vault-breakdown-grid {
+  margin-top: 6px;
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 4px 12px;
+  font-size: 0.7rem;
+  color: rgba(226, 232, 240, 0.8);
+}
+
+.currency-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.currency-particles span {
+  position: absolute;
+  bottom: -20px;
+  color: rgba(16, 185, 129, 0.25);
+  animation: float-currency 9s linear infinite;
+  filter: blur(0.2px);
+}
+
+@keyframes money-flow {
+  0% {
+    transform: translateX(-30px) scale(0.9);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(60px) scale(1.05);
+    opacity: 0;
+  }
+}
+
+@keyframes float-currency {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(-120vh) translateX(30px);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .vault-canvas {
+    height: 220px;
+  }
+
+  .vault-shell {
+    width: 190px;
+    height: 160px;
+  }
+
+  .vault-stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  button,
+  a,
+  .glass-container {
+    transition: transform 0.2s ease, filter 0.2s ease;
+  }
+
+  button:hover,
+  a:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.05);
+  }
+
+  .glass-container:hover {
+    transform: translateY(-2px);
+    filter: drop-shadow(0 18px 30px rgba(2, 6, 23, 0.35));
+  }
+}

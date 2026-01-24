@@ -1,5 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "../styles/animations.css";
+@import "../styles/performance.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -121,5 +123,191 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+:root {
+  --z-background: -10;
+  --z-default: 1;
+  --z-content: 10;
+  --z-overlay: 100;
+}
+
+section,
+.section,
+.container {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+
+.card,
+.feature-card,
+.merchant-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  position: relative;
+  z-index: var(--z-content);
+}
+
+.background-animation {
+  opacity: 0.1 !important;
+  z-index: var(--z-background) !important;
+}
+
+.spotlight-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.spotlight-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.22;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.spotlight-card:hover::before {
+  opacity: 0.4;
+}
+
+.spotlight-card-nile::before {
+  background: radial-gradient(circle at top, rgba(0, 102, 179, 0.65), transparent 70%);
+}
+
+.spotlight-card-sunset::before {
+  background: radial-gradient(circle at top, rgba(255, 140, 0, 0.55), transparent 70%);
+}
+
+.spotlight-card-palm::before {
+  background: radial-gradient(circle at top, rgba(46, 139, 87, 0.55), transparent 70%);
+}
+
+.spotlight-card-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #f0e6d2;
+}
+
+.spotlight-card-details {
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  overflow: hidden;
+}
+
+.spotlight-card:hover .spotlight-card-details,
+.spotlight-card:focus-within .spotlight-card-details {
+  max-height: 120px;
+  opacity: 1;
+}
+
+.hero-grid {
+  display: grid;
+  gap: 24px;
+  align-items: start;
+}
+
+.hero-left {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.hero-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.hero-right {
+  display: flex;
+  justify-content: center;
+}
+
+.pipeline-container {
+  margin: 0;
+}
+
+.subtle-grid-background {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.04;
+  background:
+    linear-gradient(90deg, rgba(0, 102, 179, 0.1) 1px, transparent 1px) 0 0 / 50px 50px,
+    linear-gradient(rgba(0, 102, 179, 0.1) 1px, transparent 1px) 0 0 / 50px 50px;
+}
+
+.subtle-grid-background .floating-dot {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: rgba(0, 102, 179, 0.2);
+  border-radius: 50%;
+  animation: float 20s infinite linear;
+}
+
+.subtle-grid-background .floating-dot:nth-child(2) {
+  top: 20%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.subtle-grid-background .floating-dot:nth-child(3) {
+  top: 60%;
+  left: 80%;
+  animation-delay: 7s;
+}
+
+.subtle-grid-background .floating-dot:nth-child(4) {
+  top: 40%;
+  left: 40%;
+  animation-delay: 14s;
+}
+
+@keyframes security-sweep {
+  0% {
+    transform: translateX(-120%) translateY(-30%) rotate(18deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.45;
+  }
+  100% {
+    transform: translateX(120%) translateY(30%) rotate(18deg);
+    opacity: 0;
+  }
+}
+
+.security-sweep {
+  position: absolute;
+  inset: -40% -60%;
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.18) 45%,
+    rgba(255, 255, 255, 0.05) 55%,
+    transparent 100%
+  );
+  animation: security-sweep 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@media (min-width: 1024px) {
+  .hero-grid {
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 36px;
+    align-items: center;
   }
 }

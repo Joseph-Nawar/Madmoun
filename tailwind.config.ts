@@ -6,20 +6,24 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        display: ["var(--font-playfair)", "serif"],
+        display: ["var(--font-display)", "sans-serif"],
       },
       colors: {
-        primary: "#059669",
-        accent: "#d97706",
-        surface: "#0f172a",
+        void: "#050505",
+        "deep-slate": "#020617",
+        "investment-emerald": "#10b981",
+        "liquid-gold": "#f59e0b",
+        primary: "#10b981",
+        accent: "#f59e0b",
+        surface: "#0b1220",
         "surface-border": "rgba(255,255,255,0.1)",
       },
       boxShadow: {
-        glass: "0 0 0 1px rgba(255,255,255,0.08), 0 20px 60px rgba(0,0,0,0.45)",
+        glass: "0 0 0 1px rgba(255,255,255,0.1), 0 18px 50px rgba(2,6,23,0.6)",
       },
       backgroundImage: {
         spotlight:
-          "radial-gradient(600px circle at var(--spotlight-x,50%) var(--spotlight-y,0%), rgba(5,150,105,0.25), transparent 55%)",
+          "radial-gradient(600px circle at var(--spotlight-x,50%) var(--spotlight-y,0%), rgba(16,185,129,0.2), transparent 55%)",
       },
     },
   },

@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
+import { Wallet } from "lucide-react";
 import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { PageTransition } from "@/components/page-transition";
-import { BackgroundConstruction } from "@/components/background-construction";
-import logo from "../../Madmoun_Logo_By_Kenz.jpeg";
+import { SubtleGrid } from "@/components/background/SubtleGrid";
+import { NeuralBackground } from "@/components/NeuralBackground";
+import logo from "../../Madmoun_Logo_By_Kenz.png";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -42,8 +44,8 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${playfairDisplay.variable} min-h-screen bg-[#020617] text-slate-100 antialiased`}
       >
         <div className="relative min-h-screen overflow-x-hidden">
-          <BackgroundConstruction />
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(5,150,105,0.12),transparent_55%)]" />
+          <NeuralBackground />
+          <SubtleGrid />
           <div className="relative z-10">
             <div className="sticky top-0 z-50">
               <div className="relative mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-4">
@@ -65,6 +67,17 @@ export default function RootLayout({
                   </Link>
                   <Link className="transition hover:text-emerald-300" href="/dashboard">
                     Dashboard
+                  </Link>
+                  <Link className="transition hover:text-emerald-300" href="/app/wallet">
+                    App Demo
+                  </Link>
+                  <Link
+                    href="/app/wallet"
+                    className="flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/10 px-3 py-1 text-xs uppercase tracking-[0.3em] text-emerald-200"
+                    id="vault-wallet-icon"
+                  >
+                    <Wallet className="h-4 w-4" />
+                    Vault
                   </Link>
                   <span className="rounded-full border border-amber-400/40 bg-amber-500/10 px-3 py-1 text-xs text-amber-200">
                     EGP Focused

@@ -1,15 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-import {
-  CheckCircle2,
-  Circle,
-  ShieldCheck,
-  Truck,
-} from "lucide-react";
+import { ShieldCheck } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MoneyAmount } from "@/components/money-amount";
+import { StatusTimeline } from "@/components/transactions/StatusTimeline";
 
 const transactionLookup = {
   "MDM-9821": {
@@ -51,23 +47,15 @@ export default function TransactionDetailPage({
     transactionLookup[params.id as TransactionId] ??
     transactionLookup["MDM-9821"];
 
-  const steps = [
-    {
-      title: "Payment Deposited into Madmoun Escrow",
-      status: "completed",
-      icon: CheckCircle2,
-    },
-    {
-      title: `Package Picked up by ${transaction.courier}`,
-      status: "active",
-      icon: Truck,
-    },
-    {
-      title: "Buyer Inspects & Releases Funds",
-      status: "pending",
-      icon: Circle,
-    },
-  ] as const;
+  const statusToStep: Record<string, number> = {
+    Secured: 2,
+    "In Transit": 3,
+    "Action Required": 2,
+    Completed: 5,
+    Disputed: 2,
+  };
+
+  const currentStep = statusToStep[transaction.status] ?? 1;
 
   return (
     <main className="space-y-10 pt-10">
@@ -100,52 +88,7 @@ export default function TransactionDetailPage({
           <h2 className="text-2xl font-semibold text-white font-display">
             Escrow Timeline
           </h2>
-          <div className="mt-6 space-y-6">
-            {steps.map((step, index) => {
-              const Icon = step.icon;
-              const isActive = step.status === "active";
-              const isCompleted = step.status === "completed";
-
-              return (
-                <div key={step.title} className="flex gap-4">
-                  <div className="flex flex-col items-center">
-                    <motion.div
-                      className={`flex h-10 w-10 items-center justify-center rounded-full border ${
-                        isCompleted
-                          ? "border-emerald-400/60 bg-emerald-500/20 text-emerald-200"
-                          : isActive
-                          ? "border-sky-400/60 bg-sky-500/20 text-sky-100"
-                          : "border-white/15 bg-white/5 text-slate-400"
-                      }`}
-                      animate={
-                        isActive
-                          ? { scale: [1, 1.08, 1], opacity: [0.7, 1, 0.7] }
-                          : undefined
-                      }
-                      transition={
-                        isActive
-                          ? { duration: 1.8, repeat: Infinity, ease: "easeInOut" }
-                          : undefined
-                      }
-                    >
-                      <Icon className="h-5 w-5" />
-                    </motion.div>
-                    {index < steps.length - 1 && (
-                      <div className="h-12 w-px bg-white/10" />
-                    )}
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-white">{step.title}</p>
-                    <p className="mt-1 text-xs text-slate-400">
-                      {isCompleted && "Verified and secured in escrow."}
-                      {isActive && "Courier scans verified by Madmoun."}
-                      {step.status === "pending" && "Awaiting buyer confirmation."}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+          <StatusTimeline currentStep={currentStep} />
         </Card>
 
         <Card className="glass-container gradient-border rounded-3xl p-8">

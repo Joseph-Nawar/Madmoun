@@ -3,44 +3,60 @@
 import { TrendingUp } from "lucide-react";
 import { MoneyAmount } from "@/components/money-amount";
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import gsap from "gsap";
+import { useLayoutEffect, useRef } from "react";
 import { BlurIn } from "@/components/blur-in";
 
-const logos = [
-	"SouqTech",
-	"CairoMart",
-	"NileGadgets",
-	"Zamalek Studio",
-	"Delta Logistics",
-	"Sphinx Commerce",
-	"Bosta Partners",
-	"Alexandria Luxe",
+const partnerBadges = [
+	"Aramex",
+	"Bosta",
+	"National Bank of Egypt",
+	"Fawry",
+	"Vodafone Cash",
+	"Paymob",
 ];
 
 const cards = [
 	{
-		title: "CairoMart",
+		title: "Smart Escrow Release",
 		description:
-			"Verified escrow release blocks fraudulent chargebacks and costly returns.",
+			"Automate release rules with proof-of-delivery signals and instant buyer confirmations.",
 		tier: "Enterprise",
 	},
 	{
-		title: "SouqTech",
+		title: "Automated Payouts",
 		description:
-			"Merchants display Madmoun protection to convert buyers instantly.",
+			"Route payouts to wallets or bank rails in seconds with configurable settlement windows.",
 		tier: "Growth",
 	},
 	{
-		title: "Alexandria Luxe",
+		title: "Fraud Protection Layer",
 		description:
-			"Funds clear as soon as delivery is confirmed. No manual follow-ups.",
+			"Risk scoring, identity checks, and dispute tooling that keep bad actors out.",
 		tier: "Signature",
 	},
 ];
 
 export function MerchantEdge() {
+	const marqueeRef = useRef<HTMLDivElement>(null);
 	const pulseRef = useRef<HTMLElement>(null);
 	const pulseInView = useInView(pulseRef, { amount: 0.4, once: true });
+
+	useLayoutEffect(() => {
+		const marquee = marqueeRef.current;
+		if (!marquee) return;
+
+		const ctx = gsap.context(() => {
+			gsap.to(marquee, {
+				xPercent: -50,
+				repeat: -1,
+				duration: 48,
+				ease: "linear",
+			});
+		}, marquee);
+
+		return () => ctx.revert();
+	}, []);
 
 	return (
 		<section className="glass-container gradient-border rounded-3xl p-8">
@@ -66,15 +82,16 @@ export function MerchantEdge() {
 				</BlurIn>
 			</header>
 
-			<div className="marquee glass-container gradient-border mt-8 rounded-2xl p-4">
-				<div className="marquee-track">
-					{logos.concat(logos).map((logo, index) => (
-						<span
-							key={`${logo}-${index}`}
-							className="text-xs uppercase tracking-[0.35em] text-slate-300"
+			<div className="glass-container gradient-border mt-8 overflow-hidden rounded-2xl p-4">
+				<div className="flex w-max items-center gap-6" ref={marqueeRef}>
+					{partnerBadges.concat(partnerBadges).map((partner, index) => (
+						<div
+							key={`${partner}-${index}`}
+							className="flex items-center gap-3 rounded-full border border-emerald-400/30 bg-emerald-500/10 px-4 py-2 text-[10px] uppercase tracking-[0.3em] text-emerald-100"
 						>
-							<span className="verified-shimmer">{logo}</span>
-						</span>
+							<span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(16,185,129,0.6)]" />
+							{partner}
+						</div>
 					))}
 				</div>
 			</div>
@@ -134,14 +151,27 @@ export function MerchantEdge() {
 							<h3 className="mt-2 text-2xl font-semibold text-white font-display">
 								Merchant Success Rate
 							</h3>
+							<p className="mt-2 text-sm text-slate-300">
+								Our escrow protocol ensures that 99.9% of transactions are completed without dispute, backed by automated dispute resolution.
+							</p>
 						</div>
 					</BlurIn>
 					<BlurIn delay={0.1}>
-						<MoneyAmount
-							value={99.9}
-							type="percentage"
-							className="text-3xl font-semibold text-emerald-200 font-display"
-						/>
+						<div className="flex items-center gap-3">
+							<MoneyAmount
+								value={99.9}
+								type="percentage"
+								className="text-3xl font-semibold text-emerald-200 font-display"
+							/>
+							<div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-emerald-200/80">
+								<motion.span
+									className="h-2 w-2 rounded-full bg-emerald-400"
+									animate={{ opacity: [0.4, 1, 0.4], scale: [0.9, 1.2, 0.9] }}
+									transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+								/>
+								Live
+							</div>
+						</div>
 					</BlurIn>
 				</header>
 				<figure
@@ -157,7 +187,7 @@ export function MerchantEdge() {
 							</linearGradient>
 						</defs>
 						<motion.path
-							d="M0 80 L60 72 L120 78 L180 60 L240 68 L300 50 L360 70 L420 58 L480 64 L540 48 L600 56"
+							d="M0 92 L80 68 L140 40 L220 22 L300 16 L380 16 L460 18 L540 16 L600 16"
 							fill="none"
 							stroke="url(#pulseGradient)"
 							strokeWidth="3"
@@ -168,6 +198,11 @@ export function MerchantEdge() {
 						/>
 					</svg>
 				</figure>
+				<div className="mt-3 flex flex-wrap items-center justify-between gap-3 text-[10px] uppercase tracking-[0.3em] text-slate-400">
+					<span>Transaction Integrity</span>
+					<span>Escrow Fulfillment</span>
+					<span>Merchant Reliability</span>
+				</div>
 				<div className="mt-6 grid gap-2">
 					<p className="text-[10px] uppercase tracking-[0.3em] text-emerald-200/70">
 						Live Blockchain Pulse

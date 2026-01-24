@@ -5,7 +5,13 @@ import { motion } from "framer-motion";
 
 export function TrustVisualizer() {
   return (
-    <div className="glass-container gradient-border relative flex items-center gap-3 rounded-2xl px-4 py-3">
+    <motion.div
+      data-magnetic
+      className="glass-container gradient-border relative flex items-center gap-3 rounded-2xl px-4 py-3"
+      animate={{ y: [0, -4, 0] }}
+      transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+      whileHover={{ y: -5, scale: 1.02 }}
+    >
       <motion.div
         className="absolute inset-0 rounded-2xl border border-emerald-400/40"
         animate={{ opacity: [0.2, 0.6, 0.2], scale: [1, 1.03, 1] }}
@@ -24,6 +30,6 @@ export function TrustVisualizer() {
         </p>
         <p className="text-sm text-emerald-100">Shield status: Active</p>
       </div>
-    </div>
+    </motion.div>
   );
 }
