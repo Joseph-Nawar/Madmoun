@@ -17,7 +17,6 @@
     "@radix-ui/react-tooltip": "^1.2.8",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.5.0",
-    "@studio-freight/lenis": "^1.0.42",
     "@tanstack/react-table": "^8.21.3",
     "@theatre/core": "^0.7.2",
     "@theatre/r3f": "^0.7.2",
