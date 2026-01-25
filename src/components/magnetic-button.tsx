@@ -39,7 +39,7 @@ export const MagneticButton = forwardRef<HTMLAnchorElement, MagneticButtonProps>
       () => mergeRefs<HTMLAnchorElement>([ref, buttonRef]),
       [ref]
     );
-    const MotionLink = useMemo(() => motion(Link), []);
+    const MotionLink = useMemo(() => motion.create(Link) as any, []);
 
     return (
       <MotionLink
