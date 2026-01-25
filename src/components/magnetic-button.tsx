@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import {
@@ -49,7 +50,7 @@ export const MagneticButton = forwardRef<HTMLAnchorElement, MagneticButtonProps>
         className={className}
         whileHover={{ y: -3, scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
-        onMouseMove={(event) => {
+        onMouseMove={(event: React.MouseEvent) => {
           const element = buttonRef.current;
           if (!element) return;
           const rect = element.getBoundingClientRect();
