@@ -8,11 +8,12 @@ import { useAppStore } from "@/store/mockStore";
 
 export default function NewTransactionPage() {
   const router = useRouter();
-  const { products, users, createTransaction } = useAppStore();
+  const { merchants, products, users, createTransaction } = useAppStore();
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     amount: 0,
     sellerId: "",
+    merchantId: "",
     productId: "",
     deliveryAddress: "",
     notes: "",
@@ -57,7 +58,7 @@ export default function NewTransactionPage() {
         formData={formData}
         onStepChange={setStep}
         onStepComplete={handleStepComplete}
-        products={products}
+        merchants={merchants}
         users={users.filter((user) => user.id !== users[0]?.id)}
       />
       {step === 4 && (

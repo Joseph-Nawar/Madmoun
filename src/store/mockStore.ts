@@ -375,10 +375,8 @@ export const useAppStore = create<AppState>()(
           ...state,
           merchants: Array.isArray(state.merchants)
             ? state.merchants
-                .filter((merchant): merchant is Partial<Merchant> & { id: string } =>
-                  Boolean(merchant?.id)
-                )
-                .map((merchant) => normalizeMerchant(merchant))
+                .filter((merchant) => Boolean(merchant?.id))
+                .map((merchant) => normalizeMerchant(merchant as Partial<Merchant> & { id: string }))
             : initialMerchants,
         };
       },
