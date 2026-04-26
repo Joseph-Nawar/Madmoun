@@ -68,7 +68,7 @@ export default function RootLayout({
                   <Link className="transition hover:text-emerald-300" href="/dashboard">
                     Dashboard
                   </Link>
-                  <Link className="transition hover:text-emerald-300" href="/app/wallet">
+                  <Link className="transition hover:text-emerald-300" href="/app">
                     App Demo
                   </Link>
                   <Link

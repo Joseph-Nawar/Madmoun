@@ -8,7 +8,7 @@ const navItems = [
   { href: "/app", label: "Overview", icon: "🏠" },
   { href: "/app/wallet", label: "Wallet", icon: "💳" },
   { href: "/app/transaction", label: "Transactions", icon: "🔄" },
-  { href: "/app/marketplace", label: "Marketplace", icon: "🛍️" },
+  { href: "/app/marketplace", label: "Trusted Partners", icon: "🤝" },
   { href: "/app/profile", label: "Profile", icon: "👤" },
 ];
 

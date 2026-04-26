@@ -33,6 +33,18 @@ export type Product = {
   rating: number;
 };
 
+export type Merchant = {
+  id: string;
+  name: string;
+  logo: string;
+  shortDescription: string;
+  category: string;
+  trustBadge: string;
+  rating: number;
+  transactionCount: number;
+  websiteUrl: string;
+};
+
 export type User = {
   id: string;
   name: string;
@@ -105,6 +117,74 @@ const initialProducts: Product[] = productTemplates.map((title, index) => ({
   rating: Number((4.3 + (index % 6) * 0.1).toFixed(1)),
 }));
 
+const merchantTemplates = [
+  {
+    name: "Cairo Tech Market",
+    logo: "https://api.dicebear.com/7.x/identicon/svg?seed=Cairo%20Tech%20Market",
+    shortDescription: "Consumer electronics with escrow-backed checkout and verified fulfillment.",
+    category: "Electronics",
+    trustBadge: "Top Rated",
+    rating: 4.9,
+    transactionCount: 28410,
+    websiteUrl: "https://example.com/cairo-tech-market",
+  },
+  {
+    name: "Nile Home Studio",
+    logo: "https://api.dicebear.com/7.x/identicon/svg?seed=Nile%20Home%20Studio",
+    shortDescription: "Furniture and home goods protected by release-on-confirmation escrow.",
+    category: "Home",
+    trustBadge: "Verified Partner",
+    rating: 4.8,
+    transactionCount: 16780,
+    websiteUrl: "https://example.com/nile-home-studio",
+  },
+  {
+    name: "Delta Playhouse",
+    logo: "https://api.dicebear.com/7.x/identicon/svg?seed=Delta%20Playhouse",
+    shortDescription: "Gaming hardware and accessories with dispute-friendly payment protection.",
+    category: "Gaming",
+    trustBadge: "Escrow Ready",
+    rating: 4.7,
+    transactionCount: 12450,
+    websiteUrl: "https://example.com/delta-playhouse",
+  },
+  {
+    name: "Lux Accessory Co.",
+    logo: "https://api.dicebear.com/7.x/identicon/svg?seed=Lux%20Accessory%20Co",
+    shortDescription: "Premium accessories and wearables integrated with instant escrow status updates.",
+    category: "Accessories",
+    trustBadge: "Fast Release",
+    rating: 4.6,
+    transactionCount: 9800,
+    websiteUrl: "https://example.com/lux-accessory-co",
+  },
+  {
+    name: "Maya Lifestyle House",
+    logo: "https://api.dicebear.com/7.x/identicon/svg?seed=Maya%20Lifestyle%20House",
+    shortDescription: "Lifestyle essentials sold through a monitored checkout flow with escrow guardrails.",
+    category: "Lifestyle",
+    trustBadge: "Trusted Seller",
+    rating: 4.9,
+    transactionCount: 21230,
+    websiteUrl: "https://example.com/maya-lifestyle-house",
+  },
+  {
+    name: "Alexandria Pro Supply",
+    logo: "https://api.dicebear.com/7.x/identicon/svg?seed=Alexandria%20Pro%20Supply",
+    shortDescription: "Marketplace partner for business gear, logistics tools, and secure enterprise orders.",
+    category: "Electronics",
+    trustBadge: "Enterprise Ready",
+    rating: 4.8,
+    transactionCount: 15420,
+    websiteUrl: "https://example.com/alexandria-pro-supply",
+  },
+];
+
+const initialMerchants: Merchant[] = merchantTemplates.map((merchant, index) => ({
+  id: `merchant_${index + 1}`,
+  ...merchant,
+}));
+
 const statusCycle: TransactionStatus[] = [
   "pending",
   "escrow",
@@ -136,6 +216,7 @@ interface AppState {
   lockedFunds: number;
   transactions: Transaction[];
   products: Product[];
+  merchants: Merchant[];
   users: User[];
   currentUser: User;
   addFunds: (amount: number) => void;
@@ -148,15 +229,35 @@ interface AppState {
   quickDemo: () => string;
 }
 
+const getInitialState = () => ({
+  balance: INITIAL_BALANCE,
+  lockedFunds: INITIAL_LOCKED_FUNDS,
+  transactions: initialTransactions,
+  products: initialProducts,
+  merchants: initialMerchants,
+  users: initialUsers,
+  currentUser: initialUsers[0],
+});
+
+const normalizeMerchant = (merchant: Partial<Merchant> & { id: string }): Merchant => ({
+  id: merchant.id,
+  name: merchant.name ?? "Verified Merchant",
+  logo:
+    merchant.logo ??
+    `https://api.dicebear.com/7.x/identicon/svg?seed=${encodeURIComponent(merchant.id)}`,
+  shortDescription:
+    merchant.shortDescription ?? "Escrow-enabled partner with verified checkout protection.",
+  category: merchant.category ?? "General",
+  trustBadge: merchant.trustBadge ?? "Verified",
+  rating: typeof merchant.rating === "number" ? merchant.rating : 4.5,
+  transactionCount: typeof merchant.transactionCount === "number" ? merchant.transactionCount : 0,
+  websiteUrl: merchant.websiteUrl ?? "https://example.com",
+});
+
 export const useAppStore = create<AppState>()(
   persist(
     (set, get) => ({
-      balance: INITIAL_BALANCE,
-      lockedFunds: INITIAL_LOCKED_FUNDS,
-      transactions: initialTransactions,
-      products: initialProducts,
-      users: initialUsers,
-      currentUser: initialUsers[0],
+      ...getInitialState(),
 
       addFunds: (amount) =>
         set((state) => ({
@@ -250,14 +351,7 @@ export const useAppStore = create<AppState>()(
         }),
 
       resetDemo: () =>
-        set({
-          balance: INITIAL_BALANCE,
-          lockedFunds: INITIAL_LOCKED_FUNDS,
-          transactions: initialTransactions,
-          products: initialProducts,
-          users: initialUsers,
-          currentUser: initialUsers[0],
-        }),
+        set(getInitialState()),
 
       quickDemo: () => {
         const product = get().products[0];
@@ -272,12 +366,29 @@ export const useAppStore = create<AppState>()(
     }),
     {
       name: "madmoun-store",
+      version: 1,
+      migrate: (persistedState) => {
+        const state = persistedState as Partial<AppState> & { merchants?: Partial<Merchant>[] };
+
+        return {
+          ...getInitialState(),
+          ...state,
+          merchants: Array.isArray(state.merchants)
+            ? state.merchants
+                .filter((merchant): merchant is Partial<Merchant> & { id: string } =>
+                  Boolean(merchant?.id)
+                )
+                .map((merchant) => normalizeMerchant(merchant))
+            : initialMerchants,
+        };
+      },
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
         balance: state.balance,
         lockedFunds: state.lockedFunds,
         transactions: state.transactions,
         products: state.products,
+        merchants: state.merchants,
         users: state.users,
         currentUser: state.currentUser,
       }),

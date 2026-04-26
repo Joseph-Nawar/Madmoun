@@ -1,6 +1,6 @@
 "use client";
 
-import type { Product, User } from "@/store/mockStore";
+import type { Merchant, User } from "@/store/mockStore";
 
 const steps = [
   { id: 1, title: "Amount", icon: "💰" },
@@ -14,13 +14,13 @@ type EscrowFlowProps = {
   formData: {
     amount: number;
     sellerId: string;
-    productId: string;
+    merchantId: string;
     deliveryAddress: string;
     notes: string;
   };
   onStepChange: (step: number) => void;
   onStepComplete: (data: Partial<EscrowFlowProps["formData"]>) => void;
-  products: Product[];
+  merchants: Merchant[];
   users: User[];
 };
 
@@ -29,7 +29,7 @@ export function EscrowFlow({
   formData,
   onStepChange,
   onStepComplete,
-  products,
+  merchants,
   users,
 }: EscrowFlowProps) {
   return (
@@ -100,16 +100,16 @@ export function EscrowFlow({
                 </option>
               ))}
             </select>
-            <label className="text-sm text-slate-300">Select Product</label>
+            <label className="text-sm text-slate-300">Select Merchant</label>
             <select
-              value={formData.productId}
-              onChange={(event) => onStepComplete({ productId: event.target.value })}
+              value={formData.merchantId}
+              onChange={(event) => onStepComplete({ merchantId: event.target.value })}
               className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none"
             >
-              <option value="">Choose a product</option>
-              {products.map((product) => (
-                <option key={product.id} value={product.id}>
-                  {product.title} • EGP {product.price}
+              <option value="">Choose a merchant</option>
+              {merchants.map((merchant) => (
+                <option key={merchant.id} value={merchant.id}>
+                  {merchant.name} • {merchant.category}
                 </option>
               ))}
             </select>
@@ -145,7 +145,7 @@ export function EscrowFlow({
             <ul className="space-y-2">
               <li>Amount: EGP {formData.amount || 0}</li>
               <li>Seller: {users.find((user) => user.id === formData.sellerId)?.name || "Not selected"}</li>
-              <li>Product: {products.find((product) => product.id === formData.productId)?.title || "Not selected"}</li>
+              <li>Merchant: {merchants.find((merchant) => merchant.id === formData.merchantId)?.name || "Not selected"}</li>
             </ul>
           </div>
         )}

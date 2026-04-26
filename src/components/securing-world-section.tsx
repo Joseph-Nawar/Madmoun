@@ -6,7 +6,7 @@ import { Code2, ShieldCheck, Shirt, Tv } from "lucide-react";
 
 const steps = [
   {
-    title: "Buying a 65' TV from Amazon?",
+    title: "Securing a 65' TV purchase on a partner site?",
     subtitle: "Money Locked",
     description:
       "Madmoun locks the payment instantly and releases it only when delivery is verified.",
@@ -16,7 +16,7 @@ const steps = [
     title: "A custom hoodie from an Instagram Brand?",
     subtitle: "Secured by Madmoun",
     description:
-      "Every social commerce transaction gains escrow protection that buyers trust.",
+      "Every partner site gains escrow protection that customers trust.",
     icon: Shirt,
   },
   {
@@ -54,10 +54,10 @@ export function SecuringWorldSection() {
           Securing the world
         </p>
         <h2 className="mt-3 text-3xl font-semibold text-white font-display">
-          Whatever you buy, Madmoun secures it.
+          Whatever you secure, Madmoun secures it.
         </h2>
         <p className="mt-2 max-w-2xl text-sm text-slate-300">
-          Scroll to watch escrow protection shift across commerce, social shopping,
+          Scroll to watch escrow protection shift across partner stores, social shopping,
           and professional services.
         </p>
       </header>
