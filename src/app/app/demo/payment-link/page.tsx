@@ -1,11 +1,13 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { CheckCircle2, Copy, MessageCircleMore, Send, ShieldCheck } from "lucide-react";
+import { Building2, CheckCircle2, Copy, CreditCard, MessageCircleMore, Send, ShieldCheck, Smartphone } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import { useAppStore } from "@/store/mockStore";
 import { EscrowLifecyclePanel, type DemoEscrowPhase } from "@/components/demo/EscrowLifecyclePanel";
+
+type PayoutMethod = "bank" | "card" | "instapay" | "wallet" | "other";
 
 export default function PaymentLinkDemoPage() {
   const createTransaction = useAppStore((state) => state.createTransaction);
@@ -19,12 +21,74 @@ export default function PaymentLinkDemoPage() {
   const [phase, setPhase] = useState<DemoEscrowPhase>("pending");
   const [escrowId, setEscrowId] = useState<string | null>(null);
   const [activeStep, setActiveStep] = useState<"buyer" | "seller">("buyer");
+  const [payoutMethod, setPayoutMethod] = useState<PayoutMethod | null>(null);
+  const [bankAccountHolder, setBankAccountHolder] = useState("");
+  const [bankAccountNumber, setBankAccountNumber] = useState("");
+  const [cardholderName, setCardholderName] = useState("");
+  const [cardLast4, setCardLast4] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [otherPayoutDetails, setOtherPayoutDetails] = useState("");
 
   const shareText = useMemo(
     () =>
       `Send this secure Madmoun payment link to ${sellerName}: ${generatedLink || "https://madmoun.eg/pay/demo"}`,
     [generatedLink, sellerName]
   );
+
+  const payoutMethodOptions = useMemo(
+    () => [
+      {
+        id: "bank" as const,
+        title: "Bank Account",
+        description: "Account transfer for traditional settlement.",
+        icon: Building2,
+      },
+      {
+        id: "card" as const,
+        title: "Debit / Credit Card",
+        description: "Receive to a card, keeping only the last 4 digits.",
+        icon: CreditCard,
+      },
+      {
+        id: "instapay" as const,
+        title: "InstaPay",
+        description: "Recommended for Egypt-wide instant transfers.",
+        icon: Smartphone,
+        badge: "Recommended 🇪🇬",
+      },
+      {
+        id: "wallet" as const,
+        title: "Mobile Wallet",
+        description: "Send funds to a mobile wallet number.",
+        icon: Smartphone,
+      },
+      {
+        id: "other" as const,
+        title: "Other",
+        description: "Add a short note for an alternative payout route.",
+        icon: Building2,
+      },
+    ],
+    []
+  );
+
+  const payoutReady = useMemo(() => {
+    if (!payoutMethod) return false;
+
+    switch (payoutMethod) {
+      case "bank":
+        return bankAccountHolder.trim().length > 0 && bankAccountNumber.trim().length > 0;
+      case "card":
+        return cardholderName.trim().length > 0 && /^\d{4}$/.test(cardLast4.trim());
+      case "instapay":
+      case "wallet":
+        return phoneNumber.trim().length > 0;
+      case "other":
+        return otherPayoutDetails.trim().length > 0;
+      default:
+        return false;
+    }
+  }, [bankAccountHolder, bankAccountNumber, cardLast4, cardholderName, otherPayoutDetails, payoutMethod, phoneNumber]);
 
   const handleGenerateLink = () => {
     const token = Math.random().toString(36).slice(2, 8).toUpperCase();
@@ -48,6 +112,8 @@ export default function PaymentLinkDemoPage() {
   };
 
   const handleSellerAccept = () => {
+    if (!payoutReady) return;
+
     const transactionId = createTransaction({
       amount,
       status: "pending",
@@ -257,13 +323,155 @@ export default function PaymentLinkDemoPage() {
                   Escrow terms ready
                 </div>
               </div>
+                <section className="mt-5 space-y-4 rounded-3xl border border-white/10 bg-white/5 p-4 text-sm text-slate-200">
+                  <div className="space-y-2">
+                    <h3 className="font-display text-lg font-semibold text-white">
+                      How would you like to receive your funds?
+                    </h3>
+                    <p className="text-xs leading-5 text-slate-400">
+                      This information is used to release your funds once delivery is confirmed.
+                    </p>
+                  </div>
+
+                  <div className="space-y-3">
+                    {payoutMethodOptions.map((option) => {
+                      const Icon = option.icon;
+                      const isSelected = payoutMethod === option.id;
+
+                      return (
+                        <button
+                          key={option.id}
+                          type="button"
+                          onClick={() => setPayoutMethod(option.id)}
+                          className={`flex w-full items-start gap-3 rounded-2xl border px-4 py-3 text-left transition ${
+                            isSelected
+                              ? "border-emerald-400/40 bg-emerald-500/15 text-white shadow-[0_0_0_1px_rgba(16,185,129,0.15)]"
+                              : "border-white/10 bg-white/0 text-slate-300 hover:border-white/20 hover:bg-white/5"
+                          }`}
+                        >
+                          <span className={`mt-0.5 rounded-xl p-2 ${isSelected ? "bg-emerald-400/15 text-emerald-100" : "bg-white/5 text-slate-300"}`}>
+                            <Icon className="h-4 w-4" />
+                          </span>
+                          <span className="min-w-0 flex-1 space-y-1">
+                            <span className="flex flex-wrap items-center gap-2">
+                              <span className="font-medium text-white">{option.title}</span>
+                              {option.badge ? (
+                                <span className="rounded-full border border-emerald-400/30 bg-emerald-500/10 px-2 py-0.5 text-[10px] uppercase tracking-[0.25em] text-emerald-100">
+                                  {option.badge}
+                                </span>
+                              ) : null}
+                            </span>
+                            <span className="block text-xs leading-5 text-slate-400">{option.description}</span>
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  <AnimatePresence mode="wait">
+                    {payoutMethod ? (
+                      <motion.div
+                        key={payoutMethod}
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -8 }}
+                        transition={{ duration: 0.2 }}
+                        className="space-y-4"
+                      >
+                        {payoutMethod === "bank" ? (
+                          <div className="space-y-4">
+                            <label className="space-y-2 text-sm text-slate-300">
+                              <span className="block text-xs uppercase tracking-[0.3em] text-slate-400">
+                                Account Holder Name
+                              </span>
+                              <input
+                                value={bankAccountHolder}
+                                onChange={(event) => setBankAccountHolder(event.target.value)}
+                                className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none placeholder:text-slate-500"
+                                placeholder="Account holder name"
+                              />
+                            </label>
+                            <label className="space-y-2 text-sm text-slate-300">
+                              <span className="block text-xs uppercase tracking-[0.3em] text-slate-400">
+                                IBAN or Account Number
+                              </span>
+                              <input
+                                value={bankAccountNumber}
+                                onChange={(event) => setBankAccountNumber(event.target.value)}
+                                className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none placeholder:text-slate-500"
+                                placeholder="IBAN or account number"
+                              />
+                            </label>
+                          </div>
+                        ) : null}
+
+                        {payoutMethod === "card" ? (
+                          <div className="space-y-4">
+                            <label className="space-y-2 text-sm text-slate-300">
+                              <span className="block text-xs uppercase tracking-[0.3em] text-slate-400">
+                                Cardholder Name
+                              </span>
+                              <input
+                                value={cardholderName}
+                                onChange={(event) => setCardholderName(event.target.value)}
+                                className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none placeholder:text-slate-500"
+                                placeholder="Name on card"
+                              />
+                            </label>
+                            <label className="space-y-2 text-sm text-slate-300">
+                              <span className="block text-xs uppercase tracking-[0.3em] text-slate-400">
+                                Last 4 digits only
+                              </span>
+                              <input
+                                value={cardLast4}
+                                onChange={(event) => setCardLast4(event.target.value.replace(/\D/g, "").slice(0, 4))}
+                                inputMode="numeric"
+                                maxLength={4}
+                                className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none placeholder:text-slate-500"
+                                placeholder="1234"
+                              />
+                            </label>
+                          </div>
+                        ) : null}
+
+                        {payoutMethod === "instapay" || payoutMethod === "wallet" ? (
+                          <label className="space-y-2 text-sm text-slate-300">
+                            <span className="block text-xs uppercase tracking-[0.3em] text-slate-400">
+                              Phone Number
+                            </span>
+                            <input
+                              value={phoneNumber}
+                              onChange={(event) => setPhoneNumber(event.target.value)}
+                              className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none placeholder:text-slate-500"
+                              placeholder="01xxxxxxxxx"
+                            />
+                          </label>
+                        ) : null}
+
+                        {payoutMethod === "other" ? (
+                          <label className="space-y-2 text-sm text-slate-300">
+                            <span className="block text-xs uppercase tracking-[0.3em] text-slate-400">
+                              Other payout details
+                            </span>
+                            <input
+                              value={otherPayoutDetails}
+                              onChange={(event) => setOtherPayoutDetails(event.target.value)}
+                              className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none placeholder:text-slate-500"
+                              placeholder="Describe the preferred payout route"
+                            />
+                          </label>
+                        ) : null}
+                      </motion.div>
+                    ) : null}
+                  </AnimatePresence>
+                </section>
               <button
                 type="button"
                 onClick={handleSellerAccept}
-                disabled={!generatedLink}
+                  disabled={!payoutReady}
                 className="mt-5 inline-flex items-center gap-2 rounded-full border border-emerald-400/40 bg-emerald-500/15 px-5 py-3 text-xs uppercase tracking-[0.3em] text-emerald-100 transition disabled:cursor-not-allowed disabled:opacity-40"
               >
-                Proceed with Escrow
+                  Accept Escrow
                 <ShieldCheck className="h-4 w-4" />
               </button>
             </motion.section>
